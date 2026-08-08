@@ -1,7 +1,7 @@
 # Debugging Convex Hull Logic (Incorrect Inclusion of Interior Points)
 
-**Student Name:** Paleru Dharani Govardhan  
-**Register Number:** 192525280  
+**Student Name:** Raghul. D  
+**Register Number:** 192425328  
 **Question Number:** Q26
 
 ---
