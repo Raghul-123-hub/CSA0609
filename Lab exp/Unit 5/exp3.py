@@ -1,28 +1,53 @@
-def min_coins_to_add(coins, target):
-    coins.sort()
+def minimum_time(jobs, k):
+    jobs.sort(reverse=True)
 
-    reachable = 1
-    index = 0
-    added = 0
+    workers = [0] * k
+    answer = sum(jobs)
 
-    while reachable <= target:
-        if index < len(coins) and coins[index] <= reachable:
-            reachable += coins[index]
-            index += 1
-        else:
-            # Add a coin with value equal to reachable
-            reachable += reachable
-            added += 1
+    def backtrack(index):
+        nonlocal answer
 
-    return added
+        if index == len(jobs):
+            answer = min(answer, max(workers))
+            return
+
+        job = jobs[index]
+
+        for i in range(k):
+
+            # Pruning: assigning this job already exceeds answer
+            if workers[i] + job >= answer:
+                continue
+
+            # Avoid assigning to workers with same current workload
+            if workers[i] in workers[:i]:
+                continue
+
+            workers[i] += job
+
+            # Current maximum workload
+            current_max = max(workers)
+
+            if current_max < answer:
+                backtrack(index + 1)
+
+            workers[i] -= job
+
+            # If this worker was empty, no need to try
+            # other empty workers.
+            if workers[i] == 0:
+                break
+
+    backtrack(0)
+    return answer
 
 
 # Test Case 1
-coins = [1, 4, 10]
-target = 19
-print("Minimum coins to add:", min_coins_to_add(coins, target))
+jobs = [3, 2, 3]
+k = 3
+print("Minimum maximum working time:", minimum_time(jobs, k))
 
 # Test Case 2
-coins = [1, 4, 10, 5, 7, 19]
-target = 19
-print("Minimum coins to add:", min_coins_to_add(coins, target))
+jobs = [1, 2, 4, 7, 8]
+k = 2
+print("Minimum maximum working time:", minimum_time(jobs, k))
